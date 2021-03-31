@@ -7,7 +7,7 @@ class Player(Entity):
     self.color = "#dddddd"
     self.start_x = display.get_rect().width / 2
     self.start_y = 500
-    self.length = 30
+    self.size = 30
     self.gravity = 0.2
     self.speed = 5
     self.jump_power = 7.5
@@ -16,21 +16,21 @@ class Player(Entity):
     # Rects
     self.platforms = platforms
     super().__init__(display, self.color, self.start_x, self.start_y, 
-                     self.length, self.length)
+                     self.size, self.size)
     
     # State
     self.onGround = False
     self.jumps = self.max_jumps
 
-  # Jump at constant velocity if conditions are met
   def jump(self):
+    """Jump at constant velocity if conditions are met"""
     if self.onGround and self.jumps > 0:
       self.velocity.y = -1 * self.jump_power
       self.jumps -= 1
       self.onGround = False
   
-  # Stop player from crashing into platforms
   def detect_platforms(self):
+    """Stop player from crashing into platforms"""
     platform = pygame.sprite.spritecollideany(self, self.platforms)
     if platform:
       # Check which side player came from at previous frame
@@ -40,7 +40,7 @@ class Player(Entity):
       if self.rect.left - self.velocity.x >= platform.rect.right:
         self.position.x = platform.rect.right
         self.velocity.x = 0
-      # Adding 1 in order to pass spritecollideany check above
+      # Adding 1 in order to pass spritecollideany check
       if self.rect.bottom - self.velocity.y <= platform.rect.top + 1:
         self.position.y = platform.rect.top - self.rect.height + 1
         self.velocity.y = 0

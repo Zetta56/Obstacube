@@ -1,7 +1,7 @@
 import pygame
+from functools import partial
 from random import randrange
 
-from helpers import Task
 from constants import *
 from animations import *
 from entity import Entity
@@ -21,45 +21,26 @@ class Laser(Entity):
     self.width = 50
     self.warning_timer = 1
     self.destroy_timer = 0.5
-    #self.task = Task()
 
     # Rects
     super().__init__(display, self.color, x + self.width / 2, 0, 0, SCREEN_HEIGHT)
-    
-  def update(self):
-    if self.size.x <= self.width:
-      expand_horizontal(self, self.width, self.warning_timer)
-    elif self.destroy_timer > 0:
-      self.destroy_timer -= 1 / FPS
+
+    # Actions
+    def flash():
       self.color = "#ffffff"
-    else:
-      self.rect.width += 10
-      self.rect.x -= 5
-      self.kill()
-    # else:
-    #   self.color = "#ffffff"
-    #   self.destroy.tick(self.explode)
-    # done = expand_horizontal(self, self.width, self.warning_timer)
-    # if done:
-    #   self.color = "#ffffff"
-    #   self.rect.width += 20
-    #   self.rect.x -= 5
-    #   done = self.task.delay(self.explode, 500)
-    #   if done:
-    #     self.task.delay(self.explode, 500)
-      # try:
-      #   if pygame.time.get_ticks() > self.elapsed + self.destroy_timer: 
-      #     self.color = "#ffffff"
-      #     self.rect.width += 20
-      #     self.rect.x -= 5
-          
-      #     self.kill()
-      # except:
-      #   self.elapsed = pygame.time.get_ticks()
+      self.rect.width  = self.width + 10
+      self.rect.x = self.position.x - 5
 
-  # def explode(self):
-    
-  #   self.kill()
+    self.actions = [
+      {'timer': 1, 'function': partial(expand_horizontal, self, self.width, self.warning_timer)}, 
+      {'timer': 0.25, 'function': flash},
+      {'timer': 0.1, 'function': self.kill}
+    ]
 
-  def draw(self):
-    pygame.draw.rect(self.display, pygame.Color(self.color), self.rect)
+  def update(self):
+    for action in self.actions:
+      if action['timer'] > 0:
+        action['function']()
+        # Decreases timer and stop further actions
+        action['timer'] -= 1 / FPS
+        break

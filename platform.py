@@ -2,9 +2,9 @@ import pygame
 from entity import Entity
 
 class Platform(Entity):
-  # Instantiates group of platforms
   @staticmethod
   def create_platforms(display):
+    """Instantiates group of platforms"""
     platforms = pygame.sprite.Group()
     platforms.add(Platform(display, 0, display.get_rect().height - 40, 
                            display.get_rect().width, 40))
