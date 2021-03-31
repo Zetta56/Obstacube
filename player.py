@@ -1,14 +1,13 @@
 import pygame
 from entity import Entity
-from helpers import draw_polygon
 
 class Player(Entity):
   def __init__(self, display, platforms):
     # Settings
-    self.color = "#eeeeee"
+    self.color = "#dddddd"
     self.start_x = display.get_rect().width / 2
     self.start_y = 500
-    self.size = 30
+    self.length = 30
     self.gravity = 0.2
     self.speed = 5
     self.jump_power = 7.5
@@ -17,7 +16,7 @@ class Player(Entity):
     # Rects
     self.platforms = platforms
     super().__init__(display, self.color, self.start_x, self.start_y, 
-                     self.size, self.size)
+                     self.length, self.length)
     
     # State
     self.onGround = False
