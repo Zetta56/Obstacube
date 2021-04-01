@@ -2,6 +2,9 @@ import pygame
 import math
 from constants import *
 
+class StopException(Exception):
+  pass
+
 def draw_polygon(display, color, rect, num_sides, rotation=0):
   """Draws a polygon"""
   points = []
