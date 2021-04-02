@@ -1,5 +1,10 @@
 import pygame
+from functools import partial
+
+import effects
+from settings import Settings
 from entity import Entity
+from task import Task
 
 class Player(Entity):
   def __init__(self, display, platforms):
@@ -11,6 +16,7 @@ class Player(Entity):
     self.gravity = 0.2
     self.speed = 5
     self.jump_power = 7.5
+    self.lives = 3
     self.max_jumps = 1
 
     # Rects
@@ -21,14 +27,30 @@ class Player(Entity):
     # State
     self.onGround = False
     self.jumps = self.max_jumps
+    self.intangible = False
 
   def jump(self):
     """Jump at constant velocity if conditions are met"""
     if self.onGround and self.jumps > 0:
+      self.lives -= 1
       self.velocity.y = -1 * self.jump_power
       self.jumps -= 1
       self.onGround = False
-  
+
+  def hit(self):
+    if not self.intangible:
+      self.intangible = True
+      self.lives -= 1
+
+      if self.lives > 0:
+        self.tasks.add(
+          Task(partial(effects.toggle_visible, self, False), loops=3, loop_timer=0.5),
+          Task(partial(effects.toggle_visible, self, True), delay=0.25, loops=3, loop_timer=0.5),
+          Task(partial(effects.toggle_tangible, self, True), delay=1.5)
+        )
+      else:
+        Settings.game_over = True
+ 
   def detect_platforms(self):
     """Stop player from crashing into platforms"""
     platform = pygame.sprite.spritecollideany(self, self.platforms)
@@ -57,6 +79,7 @@ class Player(Entity):
       self.onGround = False
 
   def update(self):
+    self.tasks.update()
     # Apply gravity if player isn't touching top of platform
     if not self.onGround:
       self.velocity.y += self.gravity

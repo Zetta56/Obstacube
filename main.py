@@ -1,33 +1,35 @@
 import pygame
 import sys
 
+from settings import Settings
+from scoreboard import Scoreboard
 from player import Player
 from platform import Platform
 from laser import Laser
-from helpers import *
-from constants import *
 
 class Main():
   def __init__(self):
+    pygame.init()
     self.clock = pygame.time.Clock()
-    self.display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    self.display = pygame.display.set_mode(
+      (Settings.screen_width, Settings.screen_height))
     self.display_rect = self.display.get_rect()
     self.platforms = Platform.create_platforms(self.display)
-    self.lasers = Laser.generate_lasers(self.display)
     self.player = Player(self.display, self.platforms)
-    self.seconds = 0
-    self.running = True
+    self.scoreboard = Scoreboard(self.display, self.player)
+    self.lasers = pygame.sprite.Group()
+    self.level_timer = 0
 
   def check_events(self):
     """Handles pygame events, such as quitting and keydowns"""
     for event in pygame.event.get():
       # Meta
       if event.type == pygame.QUIT:
-        self.running = False
+        Settings.running = False
       # Keydown
       if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_ESCAPE:
-          self.running = False
+          Settings.running = False
         if event.key == pygame.K_UP or event.key == pygame.K_SPACE:
           self.player.jump()
 
@@ -42,34 +44,37 @@ class Main():
       self.player.velocity.x = 0
 
   def generate_level(self):
-    if self.seconds > 2:
-      self.lasers = Laser.generate_lasers(self.display)
-      self.seconds -= 2
+    self.level_timer -= 1 / Settings.fps
+    if self.level_timer <= 0:
+      Laser.generate_lasers(self.lasers, self.display, self.player)
+      self.level_timer = 1.25
 
   def draw_and_update(self):
     """Updates game objects and re-renders screen"""
     self.display.fill(pygame.Color("#111111"))
     for platform in self.platforms:
       platform.draw()
-    for laser in self.lasers:
-      laser.update()
-      laser.draw()
+    if self.lasers != None:
+      for laser in self.lasers:
+        laser.update()
+        laser.draw()
     self.player.update()
     self.player.draw()
+    self.scoreboard.update()
+    self.scoreboard.blit()
     pygame.display.update()
 
   def run(self):
     """Runs main game"""
-    pygame.init()
-    while self.running:
+    while Settings.running:
       # Events, timers, and inputs
-      self.clock.tick(FPS)
-      self.seconds += 1 / FPS
+      self.clock.tick(Settings.fps)
       self.check_events()
-      self.check_inputs()
-      # Updating screen
-      self.generate_level()
-      self.draw_and_update()
+      if not Settings.game_over:
+        self.check_inputs()
+        # Updating screen
+        self.generate_level()
+        self.draw_and_update()
 
 # Runs game if this file is called directly
 if __name__ == "__main__":
