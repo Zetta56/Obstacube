@@ -1,10 +1,10 @@
 import pygame
 from functools import partial
 
-import effects
-from settings import Settings
-from entity import Entity
-from task import Task
+from entities.entity import Entity
+import helpers.effects as effects
+from helpers.settings import Settings
+from helpers.task import Task
 
 class Player(Entity):
   def __init__(self, display, platforms):

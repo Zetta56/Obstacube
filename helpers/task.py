@@ -1,5 +1,5 @@
 import pygame
-from settings import Settings
+from helpers.settings import Settings
 
 class StopException(Exception):
   pass

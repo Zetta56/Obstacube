@@ -2,10 +2,10 @@ import pygame
 from functools import partial
 from random import randrange
 
-import effects
-from settings import Settings
-from entity import Entity
-from task import Task
+from entities.entity import Entity
+import helpers.effects as effects
+from helpers.settings import Settings
+from helpers.task import Task
 
 class Laser(Entity):
   @staticmethod

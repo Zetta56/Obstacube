@@ -1,11 +1,11 @@
 import pygame
 import sys
 
-from settings import Settings
+from helpers.settings import Settings
+from entities.player import Player
+from entities.platform import Platform
+from entities.laser import Laser
 from scoreboard import Scoreboard
-from player import Player
-from platform import Platform
-from laser import Laser
 
 class Main():
   def __init__(self):
