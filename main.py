@@ -1,23 +1,29 @@
 import pygame
 import sys
 
-from helpers.settings import Settings
+from utils.globals import Globals
 from entities.player import Player
 from entities.platform import Platform
 from entities.laser import Laser
-from scoreboard import Scoreboard
+from menus.scoreboard import Scoreboard
+from menus.button import Button
+from menus.results import Results
 
 class Main():
   def __init__(self):
-    pygame.init()
+    def printa():
+      print("a")
+
     self.clock = pygame.time.Clock()
     self.display = pygame.display.set_mode(
-      (Settings.screen_width, Settings.screen_height))
-    self.display_rect = self.display.get_rect()
+      (Globals.display_rect.width, Globals.display_rect.height))
     self.platforms = Platform.create_platforms(self.display)
     self.player = Player(self.display, self.platforms)
     self.scoreboard = Scoreboard(self.display, self.player)
     self.lasers = pygame.sprite.Group()
+
+    self.results = Results(self.display)
+    #self.play_button = Button(self.display, "Play", self.display.get_rect().center, printa)
     self.level_timer = 0
 
   def check_events(self):
@@ -25,59 +31,67 @@ class Main():
     for event in pygame.event.get():
       # Meta
       if event.type == pygame.QUIT:
-        Settings.running = False
+        Globals.running = False
+      # Mouse
+      if event.type == pygame.MOUSEBUTTONDOWN:
+        for button in Button.button_group:
+          if button.button_rect.collidepoint(pygame.mouse.get_pos()):
+            button.function()
       # Keydown
       if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_ESCAPE:
-          Settings.running = False
+          Globals.running = False
         if event.key == pygame.K_UP or event.key == pygame.K_SPACE:
           self.player.jump()
 
   def check_inputs(self):
     """Responds to keypress inputs"""
     key = pygame.key.get_pressed()
-    if key[pygame.K_LEFT] and self.player.rect.left > self.display_rect.left:
+    if key[pygame.K_LEFT] and self.player.rect.left > self.display.get_rect().left:
       self.player.velocity.x = -1 * self.player.speed
-    elif key[pygame.K_RIGHT] and self.player.rect.right < self.display_rect.right:
+    elif key[pygame.K_RIGHT] and self.player.rect.right < self.display.get_rect().right:
       self.player.velocity.x = self.player.speed
     else:
       self.player.velocity.x = 0
 
   def generate_level(self):
-    self.level_timer -= 1 / Settings.fps
+    self.level_timer -= 1 / Globals.fps
     if self.level_timer <= 0:
       Laser.generate_lasers(self.lasers, self.display, self.player)
       self.level_timer = 1.25
 
   def draw_and_update(self):
-    """Updates game objects and re-renders screen"""
-    self.display.fill(pygame.Color("#111111"))
-    for platform in self.platforms:
-      platform.draw()
-    if self.lasers != None:
-      for laser in self.lasers:
-        laser.update()
-        laser.draw()
+    """Updates game objects and re-draws screen"""
+    # Update
+    self.lasers.update()
     self.player.update()
-    self.player.draw()
     self.scoreboard.update()
+    # Draw
+    self.display.fill(pygame.Color(Globals.bg_color))
+    for platform in self.platforms: platform.draw()
+    for laser in self.lasers: laser.draw()
+    self.player.draw()
     self.scoreboard.blit()
-    pygame.display.update()
 
   def run(self):
     """Runs main game"""
-    while Settings.running:
-      # Events, timers, and inputs
-      self.clock.tick(Settings.fps)
+    while Globals.running:
+      self.clock.tick(Globals.fps)
       self.check_events()
-      if not Settings.game_over:
+      self.draw_and_update()
+      if not Globals.game_over:
         self.check_inputs()
-        # Updating screen
         self.generate_level()
-        self.draw_and_update()
+      else:
+        self.player.visible = False
+        #self.play_button.detect_click()
+        self.results.blit()
+      pygame.display.update()
+      
 
 # Runs game if this file is called directly
 if __name__ == "__main__":
+  pygame.init()
   game = Main()
   game.run()
   # Properly close game

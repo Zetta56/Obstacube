@@ -2,9 +2,9 @@ import pygame
 from functools import partial
 
 from entities.entity import Entity
-import helpers.effects as effects
-from helpers.settings import Settings
-from helpers.task import Task
+import utils.effects as effects
+from utils.globals import Globals
+from utils.task import Task
 
 class Player(Entity):
   def __init__(self, display, platforms):
@@ -16,7 +16,7 @@ class Player(Entity):
     self.gravity = 0.2
     self.speed = 5
     self.jump_power = 7.5
-    self.lives = 3
+    self.lives = 1
     self.max_jumps = 1
 
     # Rects
@@ -49,7 +49,7 @@ class Player(Entity):
           Task(partial(effects.toggle_tangible, self, True), delay=1.5)
         )
       else:
-        Settings.game_over = True
+        Globals.game_over = True
  
   def detect_platforms(self):
     """Stop player from crashing into platforms"""

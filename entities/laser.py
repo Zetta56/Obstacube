@@ -3,15 +3,15 @@ from functools import partial
 from random import randrange
 
 from entities.entity import Entity
-import helpers.effects as effects
-from helpers.settings import Settings
-from helpers.task import Task
+import utils.effects as effects
+from utils.globals import Globals
+from utils.task import Task
 
 class Laser(Entity):
   @staticmethod
   def generate_lasers(group, display, player):
     for i in range(randrange(2, 5)):
-      x = randrange(0, Settings.screen_width - 50)
+      x = randrange(0, Globals.display_rect.width - 50)
       group.add(Laser(display, player, x))
 
   def __init__(self, display, player, x):
@@ -22,11 +22,12 @@ class Laser(Entity):
 
     # Rects
     self.player = player
-    super().__init__(display, self.color, x + self.width / 2, 0, 1, Settings.screen_height)
+    super().__init__(display, self.color, x + self.width / 2, 0, 1, 
+      Globals.display_rect.height)
 
     # Tasks
     self.tasks.add(
-      Task(partial(effects.expand_horizontal, self, self.width / Settings.fps, 
+      Task(partial(effects.expand_horizontal, self, self.width / Globals.fps, 
         "center"), duration=1), 
       Task(partial(effects.toggle_visible, self, False), delay=1), 
       Task(partial(effects.toggle_visible, self, True), delay=1.1),

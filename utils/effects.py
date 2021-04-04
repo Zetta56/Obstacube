@@ -1,3 +1,5 @@
+"""List of common effects that are designed to be used with tasks"""
+
 import pygame
 
 def toggle_visible(obj, visibility):

@@ -1,7 +1,7 @@
 import pygame
 
 class Entity(pygame.sprite.Sprite):
-  def __init__(self, display, color, x, y, width, height, image=None):
+  def __init__(self, display, color, x, y, width, height):
     super().__init__()
     self.color = color
     self.visible = True

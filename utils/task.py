@@ -1,5 +1,5 @@
 import pygame
-from helpers.settings import Settings
+from utils.globals import Globals
 
 class StopException(Exception):
   pass
@@ -30,7 +30,7 @@ class Task(pygame.sprite.Sprite):
 
   def wait(self, timer):
     """Ticks timer and raises StopException if timer isn't finished ticking"""
-    setattr(self, timer, getattr(self, timer) - 1 / Settings.fps)
+    setattr(self, timer, getattr(self, timer) - 1 / Globals.fps)
     if getattr(self, timer) > 0:
       raise StopException
 
