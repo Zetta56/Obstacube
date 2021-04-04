@@ -1,7 +1,8 @@
 import pygame
 import math
+from utils.globals import Globals
 
-def draw_polygon(display, color, rect, num_sides, rotation=0):
+def draw_polygon(color, rect, num_sides, rotation=0):
   """Draws a polygon"""
   points = []
   for i in range(num_sides):
@@ -11,4 +12,4 @@ def draw_polygon(display, color, rect, num_sides, rotation=0):
     point_x = rect.centerx + (rect.width / 2) * math.cos(angle)
     point_y = rect.centery + (rect.height / 2) * math.sin(angle)
     points.append([int(point_x), int(point_y)])
-  pygame.draw.polygon(display, color, points)
+  pygame.draw.polygon(Globals.display, color, points)

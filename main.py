@@ -15,15 +15,12 @@ class Main():
       print("a")
 
     self.clock = pygame.time.Clock()
-    self.display = pygame.display.set_mode(
-      (Globals.display_rect.width, Globals.display_rect.height))
-    self.platforms = Platform.create_platforms(self.display)
-    self.player = Player(self.display, self.platforms)
-    self.scoreboard = Scoreboard(self.display, self.player)
+    self.platforms = Platform.create_platforms()
+    self.player = Player(self.platforms)
+    self.scoreboard = Scoreboard(self.player)
     self.lasers = pygame.sprite.Group()
 
-    self.results = Results(self.display)
-    #self.play_button = Button(self.display, "Play", self.display.get_rect().center, printa)
+    self.results = Results()
     self.level_timer = 0
 
   def check_events(self):
@@ -47,9 +44,9 @@ class Main():
   def check_inputs(self):
     """Responds to keypress inputs"""
     key = pygame.key.get_pressed()
-    if key[pygame.K_LEFT] and self.player.rect.left > self.display.get_rect().left:
+    if key[pygame.K_LEFT] and self.player.rect.left > Globals.display_rect.left:
       self.player.velocity.x = -1 * self.player.speed
-    elif key[pygame.K_RIGHT] and self.player.rect.right < self.display.get_rect().right:
+    elif key[pygame.K_RIGHT] and self.player.rect.right < Globals.display_rect.right:
       self.player.velocity.x = self.player.speed
     else:
       self.player.velocity.x = 0
@@ -57,17 +54,17 @@ class Main():
   def generate_level(self):
     self.level_timer -= 1 / Globals.fps
     if self.level_timer <= 0:
-      Laser.generate_lasers(self.lasers, self.display, self.player)
+      Laser.generate_lasers(self.lasers, self.player)
       self.level_timer = 1.25
 
   def draw_and_update(self):
     """Updates game objects and re-draws screen"""
+    Globals.display.fill(pygame.Color(Globals.bg_color))
     # Update
     self.lasers.update()
     self.player.update()
     self.scoreboard.update()
     # Draw
-    self.display.fill(pygame.Color(Globals.bg_color))
     for platform in self.platforms: platform.draw()
     for laser in self.lasers: laser.draw()
     self.player.draw()

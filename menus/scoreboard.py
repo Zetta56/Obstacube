@@ -1,16 +1,14 @@
 import pygame
+from utils.globals import Globals
 
 class Scoreboard():
-  def __init__(self, display, player):
+  def __init__(self, player):
     # Settings
     self.color = "#dddddd"
     self.font = pygame.font.SysFont(None, 32)
 
-    # Rects
-    self.display = display
-    self.player = player
-
     # Info
+    self.player = player
     self.lives = self.player.lives
     self.lives_image = self.font.render(f'Lives: {self.lives}', 
       True, pygame.Color(self.color))
@@ -22,4 +20,4 @@ class Scoreboard():
         True, pygame.Color(self.color))
 
   def blit(self):
-    self.display.blit(self.lives_image, (20, 20))
+    Globals.display.blit(self.lives_image, (20, 20))

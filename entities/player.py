@@ -1,16 +1,16 @@
 import pygame
 from functools import partial
 
+from utils.globals import Globals
 from entities.entity import Entity
 import utils.effects as effects
-from utils.globals import Globals
 from utils.task import Task
 
 class Player(Entity):
-  def __init__(self, display, platforms):
+  def __init__(self, platforms):
     # Settings
     self.color = "#dddddd"
-    self.start_x = display.get_rect().width / 2
+    self.start_x = Globals.display_rect.width / 2
     self.start_y = 500
     self.size = 30
     self.gravity = 0.2
@@ -21,7 +21,7 @@ class Player(Entity):
 
     # Rects
     self.platforms = platforms
-    super().__init__(display, self.color, self.start_x, self.start_y, 
+    super().__init__(self.color, self.start_x, self.start_y, 
                      self.size, self.size)
     
     # State
@@ -32,7 +32,6 @@ class Player(Entity):
   def jump(self):
     """Jump at constant velocity if conditions are met"""
     if self.onGround and self.jumps > 0:
-      self.lives -= 1
       self.velocity.y = -1 * self.jump_power
       self.jumps -= 1
       self.onGround = False

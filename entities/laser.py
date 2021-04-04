@@ -2,19 +2,19 @@ import pygame
 from functools import partial
 from random import randrange
 
+from utils.globals import Globals
 from entities.entity import Entity
 import utils.effects as effects
-from utils.globals import Globals
 from utils.task import Task
 
 class Laser(Entity):
   @staticmethod
-  def generate_lasers(group, display, player):
+  def generate_lasers(group, player):
     for i in range(randrange(2, 5)):
       x = randrange(0, Globals.display_rect.width - 50)
-      group.add(Laser(display, player, x))
+      group.add(Laser(player, x))
 
-  def __init__(self, display, player, x):
+  def __init__(self, player, x):
     # Settings
     self.color = "#ee5555"
     self.width = 50
@@ -22,7 +22,7 @@ class Laser(Entity):
 
     # Rects
     self.player = player
-    super().__init__(display, self.color, x + self.width / 2, 0, 1, 
+    super().__init__(self.color, x + self.width / 2, 0, 1, 
       Globals.display_rect.height)
 
     # Tasks
