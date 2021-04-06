@@ -1,23 +1,18 @@
 import pygame
 from utils.globals import Globals
+from menus.text import Text
 
 class Scoreboard():
-  def __init__(self, player):
+  def __init__(self):
     # Settings
     self.color = "#dddddd"
-    self.font = pygame.font.SysFont(None, 32)
-
-    # Info
-    self.player = player
-    self.lives = self.player.lives
-    self.lives_image = self.font.render(f'Lives: {self.lives}', 
-      True, pygame.Color(self.color))
+    self.font_size = 28
+    self.update()
 
   def update(self):
-    if self.player.lives != self.lives:
-      self.lives = self.player.lives
-      self.lives_image = self.font.render(f'Lives: {self.lives}', 
-        True, pygame.Color(self.color))
+    self.lives = Text(f'Lives: {Globals.lives}', self.font_size)
+    self.lives.rect.top = Globals.display_rect.top + 20
+    self.lives.rect.left = Globals.display_rect.left + 20
 
   def blit(self):
-    Globals.display.blit(self.lives_image, (20, 20))
+    self.lives.blit()

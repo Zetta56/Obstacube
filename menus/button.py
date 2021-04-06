@@ -10,14 +10,14 @@ class Button(pygame.sprite.Sprite):
     # Group used to detect click events in main loop
     cls.button_group.add(button)
 
-  def __init__(self, center, color, text, function, 
-      width=200, height=60, text_color="#dddddd", font_size=32):
+  def __init__(self, text, color, function, center, width=200, 
+      height=60, text_color="#dddddd", font_size=28):
     super().__init__()
     # Button
     self.button_color = color
     self.button_rect = pygame.Rect(0, 0, width, height)
     self.button_rect.center = center
-    self.text = Text(self.button_rect.center, font_size)
+    self.text = Text(text, font_size, self.button_rect.center)
     self.function = function
 
     # Grouping

@@ -16,7 +16,6 @@ class Player(Entity):
     self.gravity = 0.2
     self.speed = 5
     self.jump_power = 7.5
-    self.lives = 1
     self.max_jumps = 1
 
     # Rects
@@ -39,9 +38,9 @@ class Player(Entity):
   def hit(self):
     if not self.intangible:
       self.intangible = True
-      self.lives -= 1
+      Globals.lives -= 1
 
-      if self.lives > 0:
+      if Globals.lives > 0:
         self.tasks.add(
           Task(partial(effects.toggle_visible, self, False), loops=3, loop_timer=0.5),
           Task(partial(effects.toggle_visible, self, True), delay=0.25, loops=3, loop_timer=0.5),

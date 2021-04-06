@@ -7,20 +7,23 @@ from entities.platform import Platform
 from entities.laser import Laser
 from menus.scoreboard import Scoreboard
 from menus.button import Button
+from menus.start import Start
 from menus.results import Results
+from menus.pause import Pause
 
 class Main():
   def __init__(self):
-    def printa():
-      print("a")
+    self.create_objects()
+    self.results = Results(self.create_objects)
+    self.start = Start()
+    self.pause = Pause()
 
+  def create_objects(self):
     self.clock = pygame.time.Clock()
     self.platforms = Platform.create_platforms()
     self.player = Player(self.platforms)
-    self.scoreboard = Scoreboard(self.player)
+    self.scoreboard = Scoreboard()
     self.lasers = pygame.sprite.Group()
-
-    self.results = Results()
     self.level_timer = 0
 
   def check_events(self):
@@ -36,8 +39,14 @@ class Main():
             button.function()
       # Keydown
       if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_ESCAPE:
+        if event.key == pygame.K_q:
           Globals.running = False
+        if event.key == pygame.K_RETURN:
+          if not Globals.playing: Globals.playing = True
+          if Globals.game_over: self.results.replay_button.function()
+        if event.key == pygame.K_ESCAPE:
+          if Globals.playing and not Globals.game_over:
+            Globals.paused = not Globals.paused
         if event.key == pygame.K_UP or event.key == pygame.K_SPACE:
           self.player.jump()
 
@@ -75,14 +84,21 @@ class Main():
     while Globals.running:
       self.clock.tick(Globals.fps)
       self.check_events()
-      self.draw_and_update()
-      if not Globals.game_over:
+      
+      if not Globals.playing:
+        self.start.blit()
+      elif Globals.paused:
+        self.pause.blit()
+      elif Globals.game_over:
+        self.draw_and_update()
+        self.player.visible = False
+        self.paused = False
+        self.results.blit()
+        self.results.tasks.update()
+      else:
+        self.draw_and_update()
         self.check_inputs()
         self.generate_level()
-      else:
-        self.player.visible = False
-        #self.play_button.detect_click()
-        self.results.blit()
       pygame.display.update()
       
 
