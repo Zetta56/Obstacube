@@ -6,7 +6,7 @@ from menus.text import Text
 class Start():
   def __init__(self):
     def start():
-        Globals.playing = True
+      Globals.playing = True
 
     self.title = Text("Obstacube", 72, (Globals.display_rect.centerx, 
       Globals.display_rect.centery - 60))

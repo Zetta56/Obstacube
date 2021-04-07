@@ -4,7 +4,6 @@ from random import randrange
 
 from utils.globals import Globals
 from entities.entity import Entity
-import utils.effects as effects
 from utils.task import Task
 
 class Laser(Entity):
@@ -24,14 +23,30 @@ class Laser(Entity):
     self.player = player
     super().__init__(self.color, x + self.width / 2, 0, 1, 
       Globals.display_rect.height)
+    self.schedule()
+  
+  def schedule(self):
+    def expand_horizontal(duration):
+      expansion_size = self.width / Globals.fps * duration
+      self.position.x -= expansion_size / 2
+      self.rect.x = self.position.x
+      self.length.x += expansion_size
+      self.rect.width = self.length.x
 
-    # Tasks
+    def hide():
+      self.visible = False
+
+    def flash(expansion_size):
+      self.visible = True
+      self.color = "#ffffff"
+      self.rect.width = self.length.x + expansion_size
+      self.rect.x = self.position.x - expansion_size / 2
+      self.intangible = False
+
     self.tasks.add(
-      Task(partial(effects.expand_horizontal, self, self.width / Globals.fps, 
-        "center"), duration=1), 
-      Task(partial(effects.toggle_visible, self, False), delay=1), 
-      Task(partial(effects.toggle_visible, self, True), delay=1.1),
-      Task(partial(effects.flash, self, "#ffffff", 10), delay=1.1),
+      Task(partial(expand_horizontal, 1), duration=1), 
+      Task(partial(hide), delay=1), 
+      Task(partial(flash, 10), delay=1.1),
       Task(self.kill, delay=1.3)
     )
 

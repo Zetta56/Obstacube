@@ -11,17 +11,19 @@ class Pause():
     self.tab_rect.center = Globals.display_rect.center
 
     def resume():
-      Globals.paused = False
+      if Globals.paused:
+        Globals.paused = False
     
     def exit():
-      Globals.running = False
+      if Globals.paused:
+        Globals.running = False
 
     self.message = Text("Paused", 48, (self.tab_rect.centerx, 
       self.tab_rect.centery - 80))
     self.resume_button = Button("Resume", "#22aa22", resume,
-      (self.tab_rect.centerx, self.tab_rect.centery + 10), font_size=20)
+      (self.tab_rect.centerx, self.tab_rect.centery + 10), font_size=24)
     self.exit_button = Button("Exit", "#777777", exit,
-      (self.tab_rect.centerx, self.tab_rect.centery + 80), font_size=20)
+      (self.tab_rect.centerx, self.tab_rect.centery + 80), font_size=24)
 
   def blit(self):
     Globals.display.fill(self.tab_color, self.tab_rect)

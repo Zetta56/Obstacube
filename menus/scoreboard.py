@@ -7,12 +7,20 @@ class Scoreboard():
     # Settings
     self.color = "#dddddd"
     self.font_size = 28
-    self.update()
+    self.get_stats()
 
-  def update(self):
+  def get_stats(self):
     self.lives = Text(f'Lives: {Globals.lives}', self.font_size)
     self.lives.rect.top = Globals.display_rect.top + 20
     self.lives.rect.left = Globals.display_rect.left + 20
 
+    self.score = Text(f'Score: {Globals.score}', self.font_size)
+    self.score.rect.top = Globals.display_rect.top + 20
+    self.score.rect.right = Globals.display_rect.right - 20
+
+  def update(self):
+    self.get_stats()
+
   def blit(self):
     self.lives.blit()
+    self.score.blit()

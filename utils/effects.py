@@ -1,4 +1,4 @@
-"""List of common effects that are designed to be used with tasks"""
+"""DEPRECATED"""
 
 import pygame
 

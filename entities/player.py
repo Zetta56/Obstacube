@@ -28,6 +28,19 @@ class Player(Entity):
     self.jumps = self.max_jumps
     self.intangible = False
 
+  def schedule(self):
+    def toggle_visible(visibility):
+      self.visible = visibility
+
+    def toggle_tangible(tangibility):
+      self.intangible = not tangibility
+
+    self.tasks.add(
+      Task(partial(toggle_visible, False), loops=3, loop_timer=0.5),
+      Task(partial(toggle_visible, True), delay=0.25, loops=3, loop_timer=0.5),
+      Task(partial(toggle_tangible, True), delay=1.5)
+    )
+
   def jump(self):
     """Jump at constant velocity if conditions are met"""
     if self.onGround and self.jumps > 0:
@@ -39,15 +52,8 @@ class Player(Entity):
     if not self.intangible:
       self.intangible = True
       Globals.lives -= 1
-
-      if Globals.lives > 0:
-        self.tasks.add(
-          Task(partial(effects.toggle_visible, self, False), loops=3, loop_timer=0.5),
-          Task(partial(effects.toggle_visible, self, True), delay=0.25, loops=3, loop_timer=0.5),
-          Task(partial(effects.toggle_tangible, self, True), delay=1.5)
-        )
-      else:
-        Globals.game_over = True
+      if Globals.lives > 0: self.schedule()
+      else: Globals.game_over = True
  
   def detect_platforms(self):
     """Stop player from crashing into platforms"""

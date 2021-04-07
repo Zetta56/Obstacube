@@ -13,18 +13,19 @@ from menus.pause import Pause
 
 class Main():
   def __init__(self):
-    self.create_objects()
-    self.results = Results(self.create_objects)
-    self.start = Start()
-    self.pause = Pause()
-
-  def create_objects(self):
     self.clock = pygame.time.Clock()
+    self.reset_game()
+  
+  def reset_game(self):
+    """Resets game objects, game-state, and tasks"""
+    Globals.reset_state()
     self.platforms = Platform.create_platforms()
     self.player = Player(self.platforms)
-    self.scoreboard = Scoreboard()
     self.lasers = pygame.sprite.Group()
-    self.level_timer = 0
+    self.start = Start()
+    self.pause = Pause()
+    self.scoreboard = Scoreboard()
+    self.results = Results(self.reset_game)
 
   def check_events(self):
     """Handles pygame events, such as quitting and keydowns"""
@@ -42,7 +43,7 @@ class Main():
         if event.key == pygame.K_q:
           Globals.running = False
         if event.key == pygame.K_RETURN:
-          if not Globals.playing: Globals.playing = True
+          if not Globals.playing: self.start.start_button.function()
           if Globals.game_over: self.results.replay_button.function()
         if event.key == pygame.K_ESCAPE:
           if Globals.playing and not Globals.game_over:
@@ -61,19 +62,19 @@ class Main():
       self.player.velocity.x = 0
 
   def generate_level(self):
-    self.level_timer -= 1 / Globals.fps
-    if self.level_timer <= 0:
+    Globals.level_timer -= 1 / Globals.fps
+    if Globals.level_timer <= 0:
       Laser.generate_lasers(self.lasers, self.player)
-      self.level_timer = 1.25
+      Globals.level_timer = 1.25
 
-  def draw_and_update(self):
-    """Updates game objects and re-draws screen"""
-    Globals.display.fill(pygame.Color(Globals.bg_color))
-    # Update
+  def update(self):
+    Globals.score += Globals.score_rate
     self.lasers.update()
     self.player.update()
     self.scoreboard.update()
-    # Draw
+
+  def draw(self):
+    Globals.display.fill(pygame.Color(Globals.bg_color))
     for platform in self.platforms: platform.draw()
     for laser in self.lasers: laser.draw()
     self.player.draw()
@@ -90,14 +91,13 @@ class Main():
       elif Globals.paused:
         self.pause.blit()
       elif Globals.game_over:
-        self.draw_and_update()
         self.player.visible = False
-        self.paused = False
-        self.results.blit()
-        self.results.tasks.update()
+        self.draw()
+        self.results.update()
       else:
-        self.draw_and_update()
         self.check_inputs()
+        self.update()
+        self.draw()
         self.generate_level()
       pygame.display.update()
       
