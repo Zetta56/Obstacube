@@ -7,7 +7,7 @@ import utils.effects as effects
 from utils.task import Task
 
 class Player(Entity):
-  def __init__(self, platforms):
+  def __init__(self, platforms, scoreboard):
     # Settings
     self.color = "#dddddd"
     self.start_x = Globals.display_rect.width / 2
@@ -20,6 +20,7 @@ class Player(Entity):
 
     # Rects
     self.platforms = platforms
+    self.scoreboard = scoreboard
     super().__init__(self.color, self.start_x, self.start_y, 
                      self.size, self.size)
     
@@ -52,8 +53,13 @@ class Player(Entity):
     if not self.intangible:
       self.intangible = True
       Globals.lives -= 1
-      if Globals.lives > 0: self.schedule()
-      else: Globals.game_over = True
+      self.scoreboard.update_lives()
+
+      if Globals.lives > 0: 
+        self.schedule()
+      else: 
+        self.visible = False
+        Globals.game_over = True
  
   def detect_platforms(self):
     """Stop player from crashing into platforms"""
@@ -70,12 +76,10 @@ class Player(Entity):
       if self.rect.bottom - self.velocity.y <= platform.rect.top + 1:
         self.position.y = platform.rect.top - self.rect.height + 1
         self.velocity.y = 0
-        self.jumps = self.max_jumps
         self.onGround = True
       if self.rect.top - self.velocity.y >= platform.rect.bottom:
         self.position.y = platform.rect.bottom
         self.velocity.y = 0
-      
       # Apply position changes
       self.rect.x = self.position.x
       self.rect.y = self.position.y
@@ -87,6 +91,8 @@ class Player(Entity):
     # Apply gravity if player isn't touching top of platform
     if not self.onGround:
       self.velocity.y += self.gravity
+    else:
+      self.jumps = self.max_jumps
     
     # Update position and rect before collision detection
     self.position += self.velocity

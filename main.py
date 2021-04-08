@@ -1,7 +1,8 @@
 import pygame
 import sys
-
+import time
 from utils.globals import Globals
+from utils.courses import Courses
 from entities.player import Player
 from entities.platform import Platform
 from entities.laser import Laser
@@ -20,11 +21,12 @@ class Main():
     """Resets game objects, game-state, and tasks"""
     Globals.reset_state()
     self.platforms = Platform.create_platforms()
-    self.player = Player(self.platforms)
+    self.scoreboard = Scoreboard()
+    self.player = Player(self.platforms, self.scoreboard)
     self.lasers = pygame.sprite.Group()
+    self.courses = Courses(self.player)
     self.start = Start()
     self.pause = Pause()
-    self.scoreboard = Scoreboard()
     self.results = Results(self.reset_game)
 
   def check_events(self):
@@ -61,22 +63,16 @@ class Main():
     else:
       self.player.velocity.x = 0
 
-  def generate_level(self):
-    Globals.level_timer -= 1 / Globals.fps
-    if Globals.level_timer <= 0:
-      Laser.generate_lasers(self.lasers, self.player)
-      Globals.level_timer = 1.25
-
   def update(self):
     Globals.score += Globals.score_rate
-    self.lasers.update()
+    self.scoreboard.update_score()
+    self.courses.obstacles.update()
     self.player.update()
-    self.scoreboard.update()
 
   def draw(self):
     Globals.display.fill(pygame.Color(Globals.bg_color))
     for platform in self.platforms: platform.draw()
-    for laser in self.lasers: laser.draw()
+    for obstacle in self.courses.obstacles: obstacle.draw()
     self.player.draw()
     self.scoreboard.blit()
 
@@ -91,14 +87,13 @@ class Main():
       elif Globals.paused:
         self.pause.blit()
       elif Globals.game_over:
-        self.player.visible = False
         self.draw()
         self.results.update()
       else:
         self.check_inputs()
         self.update()
         self.draw()
-        self.generate_level()
+        self.courses.tasks.update()
       pygame.display.update()
       
 

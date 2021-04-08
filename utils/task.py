@@ -30,8 +30,8 @@ class Task(pygame.sprite.Sprite):
 
   def wait(self, timer):
     """Ticks timer and raises StopException if timer isn't finished ticking"""
-    setattr(self, timer, getattr(self, timer) - 1 / Globals.fps)
     if getattr(self, timer) > 0:
+      setattr(self, timer, getattr(self, timer) - 1 / Globals.fps)
       raise StopException
 
   def update(self):

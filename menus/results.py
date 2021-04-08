@@ -10,15 +10,15 @@ class Results():
     self.tab_color = "#555555"
     self.tab_rect = pygame.Rect(0, 0, 400, 400)
     self.tab_rect.center = Globals.display_rect.center
+    self.loaded_scores = False
 
     # Static Content
     def reset():
-      if Globals.game_over: 
-        Globals.game_over = False
-        function()
+      if Globals.game_over: function()
+      
     self.message = Text("Game Over", 54, (self.tab_rect.centerx, 
       self.tab_rect.top + 80))
-    self.get_scores()
+    self.update_scores()
     self.replay_button = Button("Replay", "#22aa22", reset,
       (self.tab_rect.centerx, self.tab_rect.bottom - 80))
     self.schedule()
@@ -39,7 +39,7 @@ class Results():
       Task(blit_content, delay=1.5, loops=True)
     )
 
-  def get_scores(self):
+  def update_scores(self):
     """Updated high score and renders scores"""
     if Globals.score > Globals.high_score:
       with open("high_score.txt", "w") as f:
@@ -52,5 +52,7 @@ class Results():
       (self.tab_rect.centerx, self.tab_rect.centery + 25))
 
   def update(self):
-    self.get_scores()
+    if not self.loaded_scores:
+      self.update_scores()
+      self.loaded_scores = True
     self.tasks.update()
