@@ -1,6 +1,5 @@
 import pygame
 from utils.globals import Globals 
-from menus.text import Text
 
 class Button(pygame.sprite.Sprite):
   button_group = pygame.sprite.Group()
@@ -17,12 +16,17 @@ class Button(pygame.sprite.Sprite):
     self.button_color = color
     self.button_rect = pygame.Rect(0, 0, width, height)
     self.button_rect.center = center
-    self.text = Text(text, font_size, self.button_rect.center)
-    self.function = function
 
-    # Grouping
+    # Text
+    self.font = pygame.font.Font("assets/russo_one.ttf", font_size)
+    self.text = self.font.render(text, True, pygame.Color(text_color))
+    self.text_rect = self.text.get_rect()
+    self.text_rect.center = center
+
+    # Actions
+    self.function = function
     self.add_to_group(self)
 
   def blit(self):
     Globals.display.fill(self.button_color, self.button_rect)
-    self.text.blit()
+    Globals.display.blit(self.text, self.text_rect)

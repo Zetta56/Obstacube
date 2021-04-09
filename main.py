@@ -64,12 +64,15 @@ class Main():
       self.player.velocity.x = 0
 
   def update(self):
+    """Updates game objects"""
     Globals.score += Globals.score_rate
     self.scoreboard.update_score()
+    self.courses.tasks.update()
     self.courses.obstacles.update()
     self.player.update()
 
   def draw(self):
+    """Rerenders game objecs and screen"""
     Globals.display.fill(pygame.Color(Globals.bg_color))
     for platform in self.platforms: platform.draw()
     for obstacle in self.courses.obstacles: obstacle.draw()
@@ -87,13 +90,11 @@ class Main():
       elif Globals.paused:
         self.pause.blit()
       elif Globals.game_over:
-        self.draw()
-        self.results.update()
+        self.results.tasks.update()
       else:
         self.check_inputs()
         self.update()
         self.draw()
-        self.courses.tasks.update()
       pygame.display.update()
       
 

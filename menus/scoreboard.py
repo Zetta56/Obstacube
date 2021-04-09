@@ -1,25 +1,26 @@
 import pygame
 from utils.globals import Globals
-from menus.text import Text
 
 class Scoreboard():
   def __init__(self):
     # Settings
-    self.color = "#dddddd"
-    self.font_size = 28
+    self.text_color = "#dddddd"
+    self.font = pygame.font.Font("assets/russo_one.ttf", 28)
     self.update_lives()
     self.update_score()
 
   def update_lives(self):
-    self.lives = Text(f'Lives: {Globals.lives}', self.font_size)
-    self.lives.rect.top = Globals.display_rect.top + 20
-    self.lives.rect.left = Globals.display_rect.left + 20
+    self.lives = self.font.render(f'Lives: {Globals.lives}', True, 
+      pygame.Color(self.text_color))
+    self.lives_rect = self.lives.get_rect()
+    self.lives_rect.topleft = (Globals.display_rect.top + 20, 20)
 
   def update_score(self):
-    self.score = Text(f'Score: {Globals.score}', self.font_size)
-    self.score.rect.top = Globals.display_rect.top + 20
-    self.score.rect.right = Globals.display_rect.right - 20
+    self.score = self.font.render(f'Score: {Globals.score}', True, 
+      pygame.Color(self.text_color))
+    self.score_rect = self.score.get_rect()
+    self.score_rect.topright = (Globals.display_rect.right - 20, 20)
 
   def blit(self):
-    self.lives.blit()
-    self.score.blit()
+    Globals.display.blit(self.lives, self.lives_rect)
+    Globals.display.blit(self.score, self.score_rect)
