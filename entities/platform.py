@@ -9,7 +9,7 @@ class Platform(Entity):
     platforms = pygame.sprite.Group()
     platforms.add(Platform(0, Globals.display_rect.height - 40, 
       Globals.display_rect.width, 40))
-    platforms.add(Platform(350, 450, 150, 50))
+    #platforms.add(Platform(350, 450, 150, 50))
     return platforms
 
   def __init__(self, x, y, width, height):

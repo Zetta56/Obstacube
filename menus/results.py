@@ -50,12 +50,14 @@ class Results():
     )
 
   def update_score(self):
+    """Re-renders score"""
     self.score = self.score_font.render(f"Score: {Globals.score}",
       True, pygame.Color(self.text_color))
     self.score_rect = self.score.get_rect()
     self.score_rect.center = (self.tab_rect.centerx, self.tab_rect.centery - 25)
 
   def update_high_score(self):
+    """Re-renders and writes new high-score if current score is higher"""
     if Globals.score > Globals.high_score:
       with open("high_score.txt", "w") as f:
         f.write(str(Globals.score))

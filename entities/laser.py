@@ -7,12 +7,6 @@ from entities.entity import Entity
 from utils.task import Task
 
 class Laser(Entity):
-  @staticmethod
-  def generate_lasers(group, player):
-    for i in range(randrange(2, 5)):
-      x = randrange(0, Globals.display_rect.width - 50)
-      group.add(Laser(player, x))
-
   def __init__(self, player, x):
     # Settings
     self.color = "#ee5555"

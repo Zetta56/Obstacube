@@ -10,12 +10,14 @@ class Scoreboard():
     self.update_score()
 
   def update_lives(self):
+    """Re-renders lives"""
     self.lives = self.font.render(f'Lives: {Globals.lives}', True, 
       pygame.Color(self.text_color))
     self.lives_rect = self.lives.get_rect()
     self.lives_rect.topleft = (Globals.display_rect.top + 20, 20)
 
   def update_score(self):
+    """Re-renders score"""
     self.score = self.font.render(f'Score: {Globals.score}', True, 
       pygame.Color(self.text_color))
     self.score_rect = self.score.get_rect()

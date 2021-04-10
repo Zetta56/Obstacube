@@ -1,11 +1,13 @@
 import pygame
 import sys
 import time
+
 from utils.globals import Globals
 from utils.courses import Courses
 from entities.player import Player
 from entities.platform import Platform
 from entities.laser import Laser
+
 from menus.scoreboard import Scoreboard
 from menus.button import Button
 from menus.start import Start
@@ -24,7 +26,7 @@ class Main():
     self.scoreboard = Scoreboard()
     self.player = Player(self.platforms, self.scoreboard)
     self.lasers = pygame.sprite.Group()
-    self.courses = Courses(self.player)
+    self.courses = Courses(self.player, self.platforms)
     self.start = Start()
     self.pause = Pause()
     self.results = Results(self.reset_game)
