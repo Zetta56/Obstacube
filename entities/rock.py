@@ -19,19 +19,19 @@ class Rock(Entity):
 
   def schedule(self):
     def slide_down(duration):
-      self.position.y += (0.5 * self.size) / (duration * Globals.fps)
-      self.rect.y = self.position.y
+      self.pos.y += (0.5 * self.size) / (duration * Globals.fps)
+      self.rect.y = self.pos.y
 
     def wiggle_left(distance):
-      self.position.x -= distance
-      self.rect.x = self.position.x
+      self.pos.x -= distance
+      self.rect.x = self.pos.x
 
     def wiggle_right(distance):
-      self.position.x += distance
-      self.rect.x = self.position.x
+      self.pos.x += distance
+      self.rect.x = self.pos.x
 
     def drop():
-      self.velocity.y = self.speed
+      self.vel.y = self.speed
 
     self.tasks.add(
       Task(partial(slide_down, 1), duration=1),

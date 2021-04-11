@@ -7,13 +7,14 @@ from utils.task import Task
 from utils.helpers import draw_polygon
 from entities.entity import Entity
 
-class Roller(Entity):
+class Ball(Entity):
   def __init__(self, player, platforms, speed):
     # Settings
     self.color = "#ee5555"
     self.size = 40
     self.rotation = 0
     self.rotation_rate = 10
+    self.jump_power = 3
     self.player = player
 
     # Positioning
@@ -23,12 +24,14 @@ class Roller(Entity):
     else: 
       x = Globals.display_rect.right
     y = Globals.display_rect.height - self.size - 40
-    super().__init__(self.color, x, y, self.size, self.size)
-    self.velocity.x = speed
+    super().__init__(self.color, x, y, self.size, self.size, use_physics=True)
+    self.vel.x = speed
 
   def update(self):
     self.tasks.update()
     self.rotation += self.rotation_rate
+    if self.onGround:
+      self.vel.y = -1 * self.jump_power
 
     # Update position and check for collisions
     super().update()

@@ -2,12 +2,10 @@ import pygame
 from utils.globals import Globals 
 
 class Button(pygame.sprite.Sprite):
-  button_group = pygame.sprite.Group()
-
   @classmethod
-  def add_to_group(cls, button):
-    # Group used to detect click events in main loop
-    cls.button_group.add(button)
+  def reset_group(cls):
+    # Used in main event loop
+    cls.group = pygame.sprite.Group()
 
   def __init__(self, text, color, function, center, width=200, 
       height=60, text_color="#dddddd", font_size=28):
@@ -25,7 +23,7 @@ class Button(pygame.sprite.Sprite):
 
     # Actions
     self.function = function
-    self.add_to_group(self)
+    Button.group.add(self)
 
   def blit(self):
     Globals.display.fill(self.button_color, self.button_rect)

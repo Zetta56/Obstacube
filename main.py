@@ -23,7 +23,9 @@ class Main():
   def reset_game(self):
     """Resets game objects, game-state, and tasks"""
     Globals.reset_state()
-    self.platforms = Platform.create_platforms()
+    Platform.reset_group()
+    Button.reset_group()
+    self.platforms = Platform.group
     self.scoreboard = Scoreboard()
     self.player = Player(self.platforms, self.scoreboard)
     self.lasers = pygame.sprite.Group()
@@ -40,7 +42,7 @@ class Main():
         Globals.running = False
       # Mouse
       if event.type == pygame.MOUSEBUTTONDOWN:
-        for button in Button.button_group:
+        for button in Button.group:
           if button.button_rect.collidepoint(pygame.mouse.get_pos()):
             button.function()
       # Keydown
@@ -62,16 +64,17 @@ class Main():
     """Responds to keypress inputs"""
     key = pygame.key.get_pressed()
     if key[pygame.K_LEFT] and self.player.rect.left > Globals.display_rect.left:
-      self.player.velocity.x = -1 * self.player.speed
+      self.player.vel.x = -1 * self.player.speed
     elif key[pygame.K_RIGHT] and self.player.rect.right < Globals.display_rect.right:
-      self.player.velocity.x = self.player.speed
+      self.player.vel.x = self.player.speed
     else:
-      self.player.velocity.x = 0
+      self.player.vel.x = 0
 
   def update(self):
     """Updates game objects"""
     Globals.score += Globals.score_rate
     self.scoreboard.update_score()
+    self.platforms.update()
     self.courses.tasks.update()
     self.courses.obstacles.update()
     self.player.update()

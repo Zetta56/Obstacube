@@ -4,9 +4,10 @@ from functools import partial
 
 from utils.globals import Globals
 from utils.task import Task
+from entities.platform import Platform
 from entities.laser import Laser
 from entities.rock import Rock
-from entities.roller import Roller
+from entities.ball import Ball
 
 class Courses():
   def __init__(self, player, platforms):
@@ -14,9 +15,9 @@ class Courses():
     self.platforms = platforms
     self.obstacles = pygame.sprite.Group()
     self.course_list = [
-        #{'function': self.generate_lasers, 'loops': 4, 'loop_timer': 0.5},
-        #{'function': self.generate_rocks, 'loops': 6, 'loop_timer': 0.2},
-        {'function': self.generate_rollers, 'loops': 2, 'loop_timer': 1.5},
+        {'function': self.generate_lasers, 'loops': 4, 'loop_timer': 0.5},
+        {'function': self.generate_rocks, 'loops': 6, 'loop_timer': 0.2},
+        {'function': self.generate_balls, 'loops': 2, 'loop_timer': 1.5},
     ]
     self.schedule()
   
@@ -26,8 +27,14 @@ class Courses():
       # Creates a new task object, preserving data in course_list
       self.tasks.add(Task(**course))
 
+    def create_platform():
+      Platform.group.add(Platform(-100, 470, 100, 25, 2, 0, breakable=True))
+
     self.tasks = pygame.sprite.Group()
-    self.tasks.add(Task(pick_course, loops=True, loop_timer=3.5))
+    self.tasks.add(
+      Task(pick_course, loops=True, loop_timer=3.5),
+      Task(create_platform, loops=True, loop_timer=10)
+    )
 
   def generate_lasers(self):
     for i in range(randrange(2, 4)):
@@ -39,6 +46,6 @@ class Courses():
       x = randrange(0, Globals.display_rect.width)
       self.obstacles.add(Rock(self.player, self.platforms, x))
     
-  def generate_rollers(self):
-    self.obstacles.add(Roller(self.player, self.platforms, 3))
-    self.obstacles.add(Roller(self.player, self.platforms, -3))
+  def generate_balls(self):
+    self.obstacles.add(Ball(self.player, self.platforms, 2.5))
+    self.obstacles.add(Ball(self.player, self.platforms, -2.5))

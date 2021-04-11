@@ -22,8 +22,8 @@ class Laser(Entity):
   def schedule(self):
     def expand_horizontal(duration):
       expansion_size = self.width / Globals.fps * duration
-      self.position.x -= expansion_size / 2
-      self.rect.x = self.position.x
+      self.pos.x -= expansion_size / 2
+      self.rect.x = self.pos.x
       self.length.x += expansion_size
       self.rect.width = self.length.x
 
@@ -34,7 +34,7 @@ class Laser(Entity):
       self.visible = True
       self.color = "#ffffff"
       self.rect.width = self.length.x + expansion_size
-      self.rect.x = self.position.x - expansion_size / 2
+      self.rect.x = self.pos.x - expansion_size / 2
       self.intangible = False
 
     self.tasks.add(
