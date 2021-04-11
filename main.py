@@ -4,7 +4,7 @@ import time
 
 from utils.globals import Globals
 from utils.helpers import save_score
-from utils.courses import Courses
+from utils.spawner import Spawner
 from entities.player import Player
 from entities.platform import Platform
 from entities.laser import Laser
@@ -29,7 +29,7 @@ class Main():
     self.scoreboard = Scoreboard()
     self.player = Player(self.platforms, self.scoreboard)
     self.lasers = pygame.sprite.Group()
-    self.courses = Courses(self.player, self.platforms)
+    self.spawner = Spawner(self.player)
     self.start = Start()
     self.pause = Pause()
     self.results = Results(self.reset_game)
@@ -75,15 +75,15 @@ class Main():
     Globals.score += Globals.score_rate
     self.scoreboard.update_score()
     self.platforms.update()
-    self.courses.tasks.update()
-    self.courses.obstacles.update()
+    self.spawner.tasks.update()
+    self.spawner.obstacles.update()
     self.player.update()
 
   def draw(self):
     """Rerenders game objecs and screen"""
     Globals.display.fill(pygame.Color(Globals.bg_color))
     for platform in self.platforms: platform.draw()
-    for obstacle in self.courses.obstacles: obstacle.draw()
+    for obstacle in self.spawner.obstacles: obstacle.draw()
     self.player.draw()
     self.scoreboard.blit()
 

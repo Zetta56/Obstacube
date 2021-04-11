@@ -8,7 +8,7 @@ from utils.helpers import draw_polygon
 from entities.entity import Entity
 
 class Ball(Entity):
-  def __init__(self, player, platforms, speed):
+  def __init__(self, player, speed):
     # Settings
     self.color = "#ee5555"
     self.size = 40
