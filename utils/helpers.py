@@ -2,8 +2,14 @@ import pygame
 import math
 from utils.globals import Globals
 
+def save_score():
+  """Saves current score to text file if it's a new record"""
+  if Globals.score > Globals.high_score:
+    with open("high_score.txt", "w") as f:
+      f.write(str(Globals.score))
+
 def draw_polygon(rect, color, num_sides, rotation=0):
-  """Draws a polygon"""
+  """Draws a regular polygon"""
   points = []
   for i in range(num_sides):
     # Calculate angle measure of 2pi in radians

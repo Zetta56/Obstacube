@@ -1,5 +1,4 @@
 import pygame
-from random import choice
 from functools import partial
 
 from utils.globals import Globals
@@ -16,7 +15,6 @@ class Rock(Entity):
     super().__init__(self.color, x, -1 * self.size, self.size, self.size)
     self.player = player
     self.platforms = platforms
-    self.can_drop = False
     self.schedule()
 
   def schedule(self):
@@ -33,7 +31,7 @@ class Rock(Entity):
       self.rect.x = self.position.x
 
     def drop():
-      self.can_drop = True
+      self.velocity.y = self.speed
 
     self.tasks.add(
       Task(partial(slide_down, 1), duration=1),
@@ -43,11 +41,8 @@ class Rock(Entity):
     )
 
   def update(self):
-    # Movement
     self.tasks.update()
-    if self.can_drop:
-      self.position.y += self.speed
-      self.rect.y = self.position.y
+    super().update()
 
     # Collisions
     if pygame.sprite.collide_rect(self, self.player):

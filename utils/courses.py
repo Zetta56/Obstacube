@@ -6,6 +6,7 @@ from utils.globals import Globals
 from utils.task import Task
 from entities.laser import Laser
 from entities.rock import Rock
+from entities.roller import Roller
 
 class Courses():
   def __init__(self, player, platforms):
@@ -13,8 +14,9 @@ class Courses():
     self.platforms = platforms
     self.obstacles = pygame.sprite.Group()
     self.course_list = [
-        {'function': self.generate_lasers, 'loops': 4, 'loop_timer': 0.5},
-        {'function': self.generate_rocks, 'loops': 6, 'loop_timer': 0.2}
+        #{'function': self.generate_lasers, 'loops': 4, 'loop_timer': 0.5},
+        #{'function': self.generate_rocks, 'loops': 6, 'loop_timer': 0.2},
+        {'function': self.generate_rollers, 'loops': 2, 'loop_timer': 1.5},
     ]
     self.schedule()
   
@@ -36,3 +38,7 @@ class Courses():
     for i in range(randrange(4, 6)):
       x = randrange(0, Globals.display_rect.width)
       self.obstacles.add(Rock(self.player, self.platforms, x))
+    
+  def generate_rollers(self):
+    self.obstacles.add(Roller(self.player, self.platforms, 3))
+    self.obstacles.add(Roller(self.player, self.platforms, -3))

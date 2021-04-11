@@ -51,9 +51,9 @@ class Player(Entity):
 
   def hit(self):
     if not self.intangible:
-      self.intangible = True
       Globals.lives -= 1
       self.scoreboard.update_lives()
+      self.intangible = True
 
       if Globals.lives > 0: 
         self.schedule()
@@ -94,8 +94,6 @@ class Player(Entity):
     else:
       self.jumps = self.max_jumps
     
-    # Update position and rect before collision detection
-    self.position += self.velocity
-    self.rect.x = self.position.x
-    self.rect.y = self.position.y
+    # Update player's position before collision detection
+    super().update()
     self.detect_platforms()

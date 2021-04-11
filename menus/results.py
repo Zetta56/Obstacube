@@ -1,5 +1,6 @@
 import pygame
 from utils.globals import Globals
+from utils.helpers import save_score
 from utils.task import Task
 from menus.button import Button
 
@@ -26,13 +27,15 @@ class Results():
 
     # Button
     def reset():
-      if Globals.game_over: function()
+      if Globals.game_over: 
+        function()
     self.replay_button = Button("Replay", "#22aa22", reset,
       (self.tab_rect.centerx, self.tab_rect.bottom - 80))
     self.schedule()
 
   def schedule(self):
     def blit_tab():
+      save_score()
       Globals.display.fill(self.tab_color, self.tab_rect)
       Globals.display.blit(self.message, self.message_rect)
 
@@ -57,12 +60,8 @@ class Results():
     self.score_rect.center = (self.tab_rect.centerx, self.tab_rect.centery - 25)
 
   def update_high_score(self):
-    """Re-renders and writes new high-score if current score is higher"""
-    if Globals.score > Globals.high_score:
-      with open("high_score.txt", "w") as f:
-        f.write(str(Globals.score))
+    """Re-renders high score"""
     high_score = max(Globals.score, Globals.high_score)
-
     self.high_score = self.high_score_font.render(f"Best Score: {high_score}",
       True, pygame.Color(self.text_color))
     self.high_score_rect = self.high_score.get_rect()

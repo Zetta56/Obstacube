@@ -3,6 +3,7 @@ import sys
 import time
 
 from utils.globals import Globals
+from utils.helpers import save_score
 from utils.courses import Courses
 from entities.player import Player
 from entities.platform import Platform
@@ -47,8 +48,10 @@ class Main():
         if event.key == pygame.K_q:
           Globals.running = False
         if event.key == pygame.K_RETURN:
-          if not Globals.playing: self.start.start_button.function()
-          if Globals.game_over: self.results.replay_button.function()
+          if not Globals.playing: 
+            self.start.start_button.function()
+          if Globals.game_over: 
+            self.results.replay_button.function()
         if event.key == pygame.K_ESCAPE:
           if Globals.playing and not Globals.game_over:
             Globals.paused = not Globals.paused
@@ -106,5 +109,6 @@ if __name__ == "__main__":
   game = Main()
   game.run()
   # Properly close game
+  save_score()
   pygame.quit()
   sys.exit()

@@ -17,13 +17,15 @@ class Pause():
 
     # Resume Button
     def resume():
-      if Globals.paused: Globals.paused = False
+      if Globals.paused: 
+        Globals.paused = False
     self.resume_button = Button("Resume", "#22aa22", resume,
       (self.tab_rect.centerx, self.tab_rect.centery + 10), font_size=24)
     
     # Exit Button
     def exit():
-      if Globals.paused: Globals.running = False
+      if Globals.paused: 
+        Globals.running = False
     self.exit_button = Button("Exit", "#777777", exit,
       (self.tab_rect.centerx, self.tab_rect.centery + 80), font_size=24)
 

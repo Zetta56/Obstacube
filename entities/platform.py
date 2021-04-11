@@ -2,7 +2,7 @@ import pygame
 from utils.globals import Globals
 from entities.entity import Entity
 
-class Platform(Entity):
+class Platform(pygame.sprite.Sprite):
   @staticmethod
   def create_platforms():
     """Instantiates group of platforms"""
@@ -13,5 +13,9 @@ class Platform(Entity):
     return platforms
 
   def __init__(self, x, y, width, height):
+    super().__init__()
     self.color = "#dddddd"
-    super().__init__(self.color, x, y, width, height)
+    self.rect = pygame.Rect(x, y, width, height)
+  
+  def draw(self):
+    pygame.draw.rect(Globals.display, pygame.Color(self.color), self.rect)
