@@ -10,12 +10,13 @@ class Platform(pygame.sprite.Sprite):
     cls.group = pygame.sprite.Group()
     cls.group.add(Platform(0, Globals.display_rect.height - 40, 
       Globals.display_rect.width, 40))
-    #cls.group.add(Platform(350, 450, 150, 50))
+    #cls.group.add(Platform(350, 500, 120, 50, 0.1, 0))
 
   def __init__(self, x, y, width, height, velx=0, vely=0, breakable=False):
     super().__init__()
     self.color = "#dddddd"
     self.rect = pygame.Rect(x, y, width, height)
+    self.pos = pygame.Vector2(self.rect.x, self.rect.y)
     self.vel = pygame.Vector2(velx, vely)
     self.tasks = pygame.sprite.Group()
 
@@ -24,11 +25,11 @@ class Platform(pygame.sprite.Sprite):
     self.breakable = breakable
     self.breaking = False
   
-  def destroy(self):
+  def schedule(self):
     def toggle_visible(visibility):
       self.visible = visibility
 
-    if not self.breaking:
+    if self.breakable and not self.breaking:
       self.breaking = True
       self.tasks.add(
         Task(partial(toggle_visible, False), loops=4, loop_timer=0.25),
@@ -39,8 +40,9 @@ class Platform(pygame.sprite.Sprite):
   def update(self):
     if self.breaking:
       self.tasks.update()
-    self.rect.x += self.vel.x
-    self.rect.y += self.vel.y
+    self.pos += self.vel
+    self.rect.x = self.pos.x
+    self.rect.y = self.pos.y
 
   def draw(self):
     if self.visible:

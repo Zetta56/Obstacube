@@ -65,7 +65,4 @@ class Player(Entity):
     self.tasks.update()
     if self.onGround:
       self.jumps = self.max_jumps
-    
-    # Update player's position before collision detection
     super().update()
-    self.detect_platforms()

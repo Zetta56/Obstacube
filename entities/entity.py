@@ -30,22 +30,21 @@ class Entity(pygame.sprite.Sprite):
     # Check which side player came from at previous frame
     if platform:
       # From Left
-      if self.rect.right - self.vel.x <= platform.rect.left + abs(platform.vel.x):
-        self.pos.x = platform.rect.left + platform.vel.x - self.rect.width
+      if self.rect.right - self.vel.x <= platform.rect.left:
+        self.pos.x = platform.rect.left - self.rect.width
       # From Right
-      if self.rect.left - self.vel.x >= platform.rect.right - abs(platform.vel.x):
-        self.pos.x = platform.rect.right + platform.vel.x
-      # From Top
-      if self.rect.bottom - self.vel.y <= platform.rect.top + abs(platform.vel.y) + 1:
-        # Adding 1 in order to pass spritecollideany check
-        self.pos.y = platform.rect.top - self.rect.height + platform.vel.y + 1
+      if self.rect.left - self.vel.x >= platform.rect.right:
+        self.pos.x = platform.rect.right
+      # From Top (adding 1 in order to pass spritecollideany)
+      if self.rect.bottom - self.vel.y <= platform.rect.top + 1:
+        self.pos.y = platform.rect.top - self.rect.height + 1
         self.vel.y = 0
+        self.pos += platform.vel # carry entity along platform
         self.onGround = True
-        if platform.breakable:
-          platform.destroy()
+        platform.schedule()
       # From Bottom
-      if self.rect.top - self.vel.y >= platform.rect.bottom - abs(platform.vel.y):
-        self.pos.y = platform.rect.bottom + platform.vel.y
+      if self.rect.top - self.vel.y >= platform.rect.bottom:
+        self.pos.y = platform.rect.bottom
         self.vel.y = 0
         
       # Apply position changes
