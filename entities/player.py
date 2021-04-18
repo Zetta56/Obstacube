@@ -20,7 +20,7 @@ class Player(Entity):
     # Rects
     self.scoreboard = scoreboard
     super().__init__(self.color, self.start_x, self.start_y, 
-                     self.size, self.size, use_physics=True)
+      self.size, self.size, platforms=platforms, physics=True)
     
     # State
     self.jumps = self.max_jumps

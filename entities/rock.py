@@ -8,13 +8,14 @@ from entities.entity import Entity
 from entities.platform import Platform
 
 class Rock(Entity):
-  def __init__(self, player, x):
+  def __init__(self, player, platforms, x):
     self.color = "#ee5555"
     self.size = 30
     self.speed = 10
 
     super().__init__(self.color, x, -1 * self.size, self.size, self.size)
     self.player = player
+    self.platforms = platforms
     self.schedule()
 
   def schedule(self):
@@ -48,7 +49,7 @@ class Rock(Entity):
     if pygame.sprite.collide_rect(self, self.player):
       self.player.hit()
       self.kill()
-    if pygame.sprite.spritecollideany(self, Platform.group):
+    if pygame.sprite.spritecollideany(self, self.platforms):
       self.kill()
 
   def draw(self):

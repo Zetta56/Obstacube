@@ -1,17 +1,17 @@
 import pygame
-from entities.platform import Platform
 from utils.globals import Globals
 
 class Entity(pygame.sprite.Sprite):
-  def __init__(self, color, x, y, width, height, use_physics=False):
+  def __init__(self, color, x, y, width, height, platforms=None, physics=False):
     super().__init__()
     self.visible = True
     self.onGround = False
+    self.physics = physics
     self.gravity = 0.25
-    self.use_physics = use_physics
     self.tasks = pygame.sprite.Group()
 
     # Rects
+    self.platforms = platforms
     self.rect = pygame.Rect(x, y, width, height)
     self.color = color
     self.pos = pygame.Vector2(self.rect.x, self.rect.y)
@@ -26,7 +26,7 @@ class Entity(pygame.sprite.Sprite):
 
   def detect_platforms(self):
     """Stop entity from moving into platforms"""
-    platform = pygame.sprite.spritecollideany(self, Platform.group)
+    platform = pygame.sprite.spritecollideany(self, self.platforms)
     # Check which side player came from at previous frame 
     # to accomadate for spritecollideany's overlap requirement
     if platform:
@@ -56,9 +56,9 @@ class Entity(pygame.sprite.Sprite):
 
   def update(self):
     # Optionally update with physics
-    if self.use_physics:
-      if not self.onGround:
-        self.fall()
+    if self.physics and not self.onGround:
+      self.fall()
+    if self.platforms:
       self.detect_platforms()
     self.pos += self.vel
     self.rect.x = self.pos.x

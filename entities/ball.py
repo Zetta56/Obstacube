@@ -8,7 +8,7 @@ from utils.helpers import draw_polygon
 from entities.entity import Entity
 
 class Ball(Entity):
-  def __init__(self, player, speed):
+  def __init__(self, player, platforms, speed):
     # Settings
     self.color = "#ee5555"
     self.size = 40
@@ -24,7 +24,7 @@ class Ball(Entity):
     else: 
       x = Globals.display_rect.right
     super().__init__(self.color, x, Globals.floor_y - self.size, 
-      self.size, self.size, use_physics=True)
+      self.size, self.size, platforms=platforms, physics=True)
     self.vel.x = speed
 
   def update(self):
