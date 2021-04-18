@@ -23,8 +23,8 @@ class Ball(Entity):
       x = Globals.display_rect.left - self.size
     else: 
       x = Globals.display_rect.right
-    y = Globals.display_rect.height - self.size - 40
-    super().__init__(self.color, x, y, self.size, self.size, use_physics=True)
+    super().__init__(self.color, x, Globals.floor_y - self.size, 
+      self.size, self.size, use_physics=True)
     self.vel.x = speed
 
   def update(self):

@@ -5,11 +5,15 @@ from utils.globals import Globals
 from utils.task import Task
 
 class Platform(pygame.sprite.Sprite):
+  """
+  Defines basic platforms. This also manages platform groups and doesn't 
+  inherit from entity, since it's required within entity
+  """
   @classmethod
   def reset_group(cls):
     cls.group = pygame.sprite.Group()
-    cls.group.add(Platform(0, Globals.display_rect.height - 40, 
-      Globals.display_rect.width, 40))
+    cls.group.add(Platform(0, Globals.floor_y, Globals.display_rect.width, 
+      Globals.display_rect.height - Globals.floor_y))
     #cls.group.add(Platform(350, 500, 120, 50, 0.1, 0))
 
   def __init__(self, x, y, width, height, velx=0, vely=0, breakable=False):

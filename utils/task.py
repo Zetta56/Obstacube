@@ -23,10 +23,14 @@ class Task(pygame.sprite.Sprite):
     self.duration = duration
     self.loops = loops
     self.loop_timer = 0 # Ignore loop_timer during first loop
-
     # Used to reset attributes
     self.max_duration = duration
     self.max_loop_timer = loop_timer
+
+  def __copy__(self):
+    copy = self.__class__(self.function)
+    copy.__dict__.update(self.__dict__)
+    return copy
 
   def wait(self, timer):
     """Ticks timer and raises StopException if timer isn't finished ticking"""

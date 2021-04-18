@@ -13,19 +13,16 @@ class Player(Entity):
     self.start_x = Globals.display_rect.width / 2
     self.start_y = 500
     self.size = 30
-   # self.gravity = 0.2
     self.speed = 5
     self.jump_power = 7.5
     self.max_jumps = 1
 
     # Rects
-    self.platforms = Platform.group
     self.scoreboard = scoreboard
     super().__init__(self.color, self.start_x, self.start_y, 
                      self.size, self.size, use_physics=True)
     
     # State
-    #self.onGround = False
     self.jumps = self.max_jumps
     self.intangible = False
 

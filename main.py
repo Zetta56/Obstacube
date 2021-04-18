@@ -28,8 +28,7 @@ class Main():
     self.platforms = Platform.group
     self.scoreboard = Scoreboard()
     self.player = Player(self.platforms, self.scoreboard)
-    self.lasers = pygame.sprite.Group()
-    self.spawner = Spawner(self.player)
+    self.spawner = Spawner(self.player, self.scoreboard)
     self.start = Start()
     self.pause = Pause()
     self.results = Results(self.reset_game)
@@ -75,8 +74,7 @@ class Main():
     Globals.score += Globals.score_rate
     self.scoreboard.update_score()
     self.platforms.update()
-    self.spawner.tasks.update()
-    self.spawner.obstacles.update()
+    self.spawner.update()
     self.player.update()
 
   def draw(self):
@@ -84,6 +82,7 @@ class Main():
     Globals.display.fill(pygame.Color(Globals.bg_color))
     for platform in self.platforms: platform.draw()
     for obstacle in self.spawner.obstacles: obstacle.draw()
+    self.spawner.items.draw(Globals.display)
     self.player.draw()
     self.scoreboard.blit()
 

@@ -25,9 +25,10 @@ class Entity(pygame.sprite.Sprite):
       self.vel.y += self.gravity
 
   def detect_platforms(self):
-    """Stop entity from crashing into platforms"""
+    """Stop entity from moving into platforms"""
     platform = pygame.sprite.spritecollideany(self, Platform.group)
-    # Check which side player came from at previous frame
+    # Check which side player came from at previous frame 
+    # to accomadate for spritecollideany's overlap requirement
     if platform:
       # From Left
       if self.rect.right - self.vel.x <= platform.rect.left:
