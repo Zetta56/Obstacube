@@ -3,9 +3,8 @@ from utils.globals import Globals
 
 class Button(pygame.sprite.Sprite):
   @classmethod
-  def reset_group(cls):
-    # Used in main event loop
-    cls.group = pygame.sprite.Group()
+  def reset_list(cls):
+    cls.list = []  # Iterated over in main event loop to detect clicks
 
   def __init__(self, text, color, function, center, width=200, 
       height=60, text_color="#dddddd", font_size=28):
@@ -23,7 +22,7 @@ class Button(pygame.sprite.Sprite):
 
     # Actions
     self.function = function
-    Button.group.add(self)
+    Button.list.append(self)
 
   def blit(self):
     Globals.display.fill(self.button_color, self.button_rect)

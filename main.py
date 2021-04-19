@@ -14,6 +14,7 @@ from menus.button import Button
 from menus.start import Start
 from menus.results import Results
 from menus.pause import Pause
+from items.item import Item
 
 class Main():
   def __init__(self):
@@ -23,7 +24,7 @@ class Main():
   def reset_game(self):
     """Resets game objects, game-state, and tasks"""
     Globals.reset_state()
-    Button.reset_group()
+    Button.reset_list()
     self.scoreboard = Scoreboard()
     self.spawner = Spawner(self.scoreboard)
     self.player = self.spawner.player
@@ -39,7 +40,7 @@ class Main():
         Globals.running = False
       # Mouse
       if event.type == pygame.MOUSEBUTTONDOWN:
-        for button in Button.group:
+        for button in Button.list:
           if button.button_rect.collidepoint(pygame.mouse.get_pos()):
             button.function()
       # Keydown
