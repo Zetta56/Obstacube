@@ -10,8 +10,8 @@ from entities.platform import Platform
 from entities.laser import Laser
 from entities.rock import Rock
 from entities.ball import Ball
-
 from items.medkit import Medkit
+from items.shield import Shield
 
 class Spawner():
   def __init__(self, scoreboard):
@@ -30,14 +30,15 @@ class Spawner():
     self.obstacles = pygame.sprite.Group()
     self.obstacle_list = [
       Task(self.spawn_lasers, loops=4, loop_timer=0.5),
-      Task(self.spawn_rocks, loops=6, loop_timer=0.2),
-      Task(self.spawn_balls, loops=2, loop_timer=1.5)
+      # Task(self.spawn_rocks, loops=6, loop_timer=0.2),
+      # Task(self.spawn_balls, loops=2, loop_timer=1.5)
     ]
 
     # Items
     self.items = pygame.sprite.Group()
     self.item_list = [
-      Medkit(self.items, self.player, self.scoreboard)
+      #Medkit(self.player, self.scoreboard),
+      Shield(self.player)
     ]
     self.schedule()
   

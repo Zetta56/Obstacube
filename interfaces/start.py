@@ -1,6 +1,6 @@
 import pygame
 from utils.globals import Globals
-from menus.button import Button
+from interfaces.button import Button
 
 class Start():
   def __init__(self):

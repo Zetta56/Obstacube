@@ -19,6 +19,7 @@ class Globals():
   @classmethod
   def reset_state(cls):
     cls.game_over = False
+    cls.status_effects = pygame.sprite.Group()
     cls.bg_color = "#111111"
     cls.lives = cls.max_lives
     cls.level_timer = 0

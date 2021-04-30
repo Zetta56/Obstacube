@@ -42,7 +42,7 @@ class Entity(pygame.sprite.Sprite):
         self.vel.y = 0
         self.pos += platform.vel # carry entity along platform
         self.onGround = True
-        platform.schedule()
+        platform.schedule() # schedules breaking animation
       # From Bottom
       if self.rect.top - self.vel.y >= platform.rect.bottom:
         self.pos.y = platform.rect.bottom

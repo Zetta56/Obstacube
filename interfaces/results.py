@@ -2,7 +2,7 @@ import pygame
 from utils.globals import Globals
 from utils.helpers import save_score
 from utils.task import Task
-from menus.button import Button
+from interfaces.button import Button
 
 class Results():
   def __init__(self, function):
