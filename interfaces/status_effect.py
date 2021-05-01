@@ -3,12 +3,17 @@ from utils.globals import Globals
 from utils.task import Task
 
 class StatusEffect(pygame.sprite.Sprite):
-  default_pos = (20, 70) # position of topleft-most status effect
+  @classmethod
+  def reset(cls):
+    cls.default_pos = (20, 70)
+    cls.index = 0
+    cls.group = pygame.sprite.Group()
 
   def __init__(self, name, icon, undo_effect, duration):
     super().__init__()
     self.name = name
-    self.x = StatusEffect.default_pos[0] + len(Globals.status_effects) * 40
+    self.index = StatusEffect.index
+    self.x = StatusEffect.default_pos[0] + self.index * 40
     self.size = 35
 
     # Icon
@@ -30,19 +35,34 @@ class StatusEffect(pygame.sprite.Sprite):
     self.duration = duration
     self.schedule()
 
+    StatusEffect.index += 1
+    self.handle_duplicate()
+
+  def realign(self):
+    """Repositions status effect using index"""
+    self.x = StatusEffect.default_pos[0] + self.index * 40
+    self.icon_rect.x = self.x
+    self.shadow_rect.x = self.x
+
+  def handle_duplicate(self):
+    """Replaces duplicate status effect with current one"""
+    for status_effect in StatusEffect.group:
+      if status_effect.name == self.name and status_effect is not self:
+        self.index = status_effect.index
+        self.realign()
+        status_effect.kill()
+        StatusEffect.index -= 1
+
   def schedule(self):
     def expire():
-      expiring = True
-      # Moves other effect icons to the left when effect expires
-      for status_effect in Globals.status_effects:
-        if status_effect.name == self.name and status_effect is not self:
-          expiring = False
-        if status_effect.x > self.x:
-          status_effect.x -= 40
-        status_effect.icon_rect.x = status_effect.x
-        status_effect.shadow_rect.x = status_effect.x
-      if expiring:
-        self.undo_effect()
+      # Realigns other status effects
+      for status_effect in StatusEffect.group:
+        if status_effect.index > self.index:
+          status_effect.index -= 1
+          status_effect.realign()
+
+      StatusEffect.index -= 1
+      self.undo_effect()
       self.kill()
 
     self.tasks = pygame.sprite.Group()

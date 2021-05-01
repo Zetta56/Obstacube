@@ -9,6 +9,7 @@ from interfaces.scoreboard import Scoreboard
 from interfaces.button import Button
 from interfaces.start import Start
 from interfaces.results import Results
+from interfaces.status_effect import StatusEffect
 from interfaces.pause import Pause
 from entities.player import Player
 from entities.platform import Platform
@@ -22,8 +23,9 @@ class Main():
   
   def reset_game(self):
     """Resets game objects, game-state, and tasks"""
-    Globals.reset_state()
-    Button.reset_list()
+    Globals.reset()
+    Button.reset()
+    StatusEffect.reset()
     self.scoreboard = Scoreboard()
     self.spawner = Spawner(self.scoreboard)
     self.player = self.spawner.player
@@ -71,7 +73,7 @@ class Main():
   def update(self):
     """Updates game objects"""
     Globals.score += Globals.score_rate
-    Globals.status_effects.update()
+    StatusEffect.group.update()
     self.scoreboard.update_score()
     self.spawner.update()
 
@@ -83,7 +85,7 @@ class Main():
     self.spawner.items.draw(Globals.display)
     self.player.draw()
     self.scoreboard.blit()
-    for status_effect in Globals.status_effects:
+    for status_effect in StatusEffect.group:
       status_effect.draw()
 
   def run(self):

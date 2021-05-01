@@ -16,7 +16,7 @@ class Player(Entity):
     self.speed = 5
     self.jump_power = 7.5
     self.max_jumps = 1
-    self.max_lives = 10
+    self.max_lives = 3
 
     # Rects
     self.scoreboard = scoreboard
@@ -54,7 +54,7 @@ class Player(Entity):
       self.scoreboard.update_lives(self.lives)
       self.intangible = True
 
-      if Globals.lives > 0: 
+      if self.lives > 0: 
         self.schedule()
       else: 
         self.visible = False

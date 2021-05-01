@@ -3,7 +3,7 @@ from utils.globals import Globals
 
 class Button(pygame.sprite.Sprite):
   @classmethod
-  def reset_list(cls):
+  def reset(cls):
     cls.list = []  # Iterated over in main event loop to detect clicks
 
   def __init__(self, text, color, function, center, width=200, 

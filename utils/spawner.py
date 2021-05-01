@@ -38,7 +38,7 @@ class Spawner():
     # Items
     self.items = pygame.sprite.Group()
     self.item_list = [
-      Medkit(self.player, self.scoreboard),
+      #Medkit(self.player, self.scoreboard),
       Shield(self.player),
       DoubleJump(self.player)
     ]

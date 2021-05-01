@@ -14,10 +14,6 @@ def draw_polygon(rect, color, num_sides, rotation=0):
     points.append((int(point_x), int(point_y)))
   pygame.draw.polygon(Globals.display, color, points)
 
-def load_item_image(image_path):
-  preimage = pygame.image.load(image_path).convert_alpha()
-  return pygame.transform.scale(preimage, (50, 50))
-
 def save_score():
   """Saves current score to text file if it's a new record"""
   if Globals.score > Globals.high_score:

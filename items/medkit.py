@@ -1,12 +1,11 @@
 import pygame
 
 from utils.globals import Globals
-from utils.helpers import load_item_image
 from interfaces.status_effect import StatusEffect
 from items.item import Item
 
 class Medkit(Item):
-  image = load_item_image("assets/medkit.png")
+  image = pygame.image.load("assets/medkit.png").convert_alpha()
 
   def __init__(self, player, scoreboard):
     super().__init__(player, Medkit.image)

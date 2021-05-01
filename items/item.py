@@ -9,7 +9,7 @@ class Item(pygame.sprite.Sprite):
   def __init__(self, player, image):
     super().__init__()
     self.player = player
-    self.image = image
+    self.image = pygame.transform.scale(image, (50, 50))
     self.rect = self.image.get_rect()
     self.rect.x = self.get_valid_x()
     self.rect.y = Globals.floor_y - self.rect.height
@@ -31,4 +31,4 @@ class Item(pygame.sprite.Sprite):
   def update(self):
     if self.undo_effect is not None and self.duration > 0:
       Globals.status_effects.add(StatusEffect(self.image, self.undo_effect, self.duration))
-    self.kill()
+      self.kill()
