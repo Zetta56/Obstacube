@@ -6,12 +6,11 @@ class Scoreboard():
     # Settings
     self.text_color = "#dddddd"
     self.font = pygame.font.Font("assets/russo_one.ttf", 28)
-    self.update_lives()
     self.update_score()
 
-  def update_lives(self):
+  def update_lives(self, lives):
     """Re-renders lives"""
-    self.lives = self.font.render(f'Lives: {Globals.lives}', True, 
+    self.lives = self.font.render(f'Lives: {lives}', True, 
       pygame.Color(self.text_color))
     self.lives_rect = self.lives.get_rect()
     self.lives_rect.topleft = (Globals.display_rect.left + 20, 20)

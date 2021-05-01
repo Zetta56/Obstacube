@@ -16,8 +16,9 @@ class Medkit(Item):
     return self.__class__(self.player, self.scoreboard)
 
   def update(self):
-    if (Globals.lives != Globals.max_lives and
+    if (self.player.lives != self.player.max_lives and
         pygame.sprite.collide_rect(self, self.player)):
-      Globals.lives = min(Globals.max_lives, Globals.lives + Globals.max_lives / 2)
-      self.scoreboard.update_lives()
+      self.player.lives = min(self.player.max_lives, (self.player.lives + 
+        self.player.max_lives / 2))
+      self.scoreboard.update_lives(self.player.lives)
       self.kill()

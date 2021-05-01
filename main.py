@@ -27,6 +27,7 @@ class Main():
     self.scoreboard = Scoreboard()
     self.spawner = Spawner(self.scoreboard)
     self.player = self.spawner.player
+    self.scoreboard.update_lives(self.player.lives)
     self.start = Start()
     self.pause = Pause()
     self.results = Results(self.reset_game)

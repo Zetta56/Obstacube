@@ -16,6 +16,7 @@ class Player(Entity):
     self.speed = 5
     self.jump_power = 7.5
     self.max_jumps = 1
+    self.max_lives = 10
 
     # Rects
     self.scoreboard = scoreboard
@@ -24,6 +25,7 @@ class Player(Entity):
     
     # State
     self.jumps = self.max_jumps
+    self.lives = self.max_lives
     self.intangible = False
 
   def schedule(self):
@@ -48,8 +50,8 @@ class Player(Entity):
 
   def hit(self):
     if not self.intangible:
-      Globals.lives -= 1
-      self.scoreboard.update_lives()
+      self.lives -= 1
+      self.scoreboard.update_lives(self.lives)
       self.intangible = True
 
       if Globals.lives > 0: 
