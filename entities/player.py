@@ -40,8 +40,8 @@ class Player(Entity):
     )
 
   def jump(self):
-    """Jump at constant velocity if conditions are met"""
-    if self.onGround and self.jumps > 0:
+    """Jump at constant velocity if player still has jumps"""
+    if self.jumps > 0:
       self.vel.y = -1 * self.jump_power
       self.jumps -= 1
       self.onGround = False
