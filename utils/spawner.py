@@ -14,6 +14,7 @@ from entities.lava import Lava
 from items.medkit import Medkit
 from items.shield import Shield
 from items.double_jump import DoubleJump
+from items.speed_up import SpeedUp
 from entities.drone import Drone
 
 class Spawner():
@@ -44,7 +45,8 @@ class Spawner():
     self.item_list = [
       Medkit(self.player, self.scoreboard),
       Shield(self.player),
-      DoubleJump(self.player)
+      DoubleJump(self.player),
+      SpeedUp(self.player)
     ]
     self.schedule()
   
