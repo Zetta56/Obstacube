@@ -1,30 +1,24 @@
 import pygame
-import math
-from random import randrange
-
 from utils.globals import Globals
 from utils.task import Task
 from utils.helpers import draw_polygon
 from entities.entity import Entity
 
 class Ball(Entity):
-  def __init__(self, player, platforms, speed):
+  size = 40 # Used for positioning in spawner
+
+  def __init__(self, player, platforms, x, y, speed):
     # Settings
     self.color = "#ee5555"
-    self.size = 40
     self.rotation = 0
     self.rotation_rate = 10
     self.jump_power = 3
     self.player = player
+    if speed > 0: self.rotation_rate *= -1
 
     # Positioning
-    if speed > 0: 
-      self.rotation_rate *= -1
-      x = Globals.display_rect.left - self.size
-    else: 
-      x = Globals.display_rect.right
-    super().__init__(self.color, x, Globals.floor_y - self.size, 
-      self.size, self.size, platforms=platforms, physics=True)
+    super().__init__(self.color, x, y, Ball.size, Ball.size, 
+      platforms=platforms, physics=True)
     self.vel.x = speed
 
   def update(self):

@@ -10,7 +10,7 @@ from entities.platform import Platform
 class Rock(Entity):
   def __init__(self, player, platforms, x):
     self.color = "#ee5555"
-    self.size = 30
+    self.size = 35
     self.speed = 10
 
     super().__init__(self.color, x, -1 * self.size, self.size, self.size)

@@ -58,6 +58,7 @@ class Entity(pygame.sprite.Sprite):
     # Optionally update with physics
     if self.physics and not self.onGround:
       self.fall()
+    # Maybe move platform parameter from init to update
     if self.platforms:
       self.detect_platforms()
     self.pos += self.vel

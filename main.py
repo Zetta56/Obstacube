@@ -11,9 +11,7 @@ from interfaces.start import Start
 from interfaces.results import Results
 from interfaces.status_effect import StatusEffect
 from interfaces.pause import Pause
-from entities.player import Player
-from entities.platform import Platform
-from entities.laser import Laser
+from entities.bullet import Bullet
 from items.item import Item
 
 class Main():
@@ -25,6 +23,7 @@ class Main():
     """Resets game objects, game-state, and tasks"""
     Globals.reset()
     Button.reset()
+    Bullet.reset()
     StatusEffect.reset()
     self.scoreboard = Scoreboard()
     self.spawner = Spawner(self.scoreboard)
@@ -74,6 +73,7 @@ class Main():
     """Updates game objects"""
     Globals.score += Globals.score_rate
     StatusEffect.group.update()
+    Bullet.group.update()
     self.scoreboard.update_score()
     self.spawner.update()
 
@@ -81,9 +81,10 @@ class Main():
     """Rerenders game objecs and screen"""
     Globals.display.fill(pygame.Color(Globals.bg_color))
     for platform in self.spawner.platforms: platform.draw()
-    for obstacle in self.spawner.obstacles: obstacle.draw()
     self.spawner.items.draw(Globals.display)
     self.player.draw()
+    for obstacle in self.spawner.obstacles: obstacle.draw()
+    for bullet in Bullet.group: bullet.draw()
     self.scoreboard.blit()
     for status_effect in StatusEffect.group:
       status_effect.draw()

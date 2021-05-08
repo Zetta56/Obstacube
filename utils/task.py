@@ -5,7 +5,7 @@ class StopException(Exception):
   pass
 
 class Task(pygame.sprite.Sprite):
-  """Schedules functions to run at the right time
+  """Schedules animations to run at the right time
 
    function: the function you want to schedule
    delay: wait time before function is called

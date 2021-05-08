@@ -3,6 +3,7 @@ from functools import partial
 
 from utils.globals import Globals
 from utils.task import Task
+from interfaces.status_effect import StatusEffect
 from entities.entity import Entity
 from entities.platform import Platform
 
@@ -32,13 +33,15 @@ class Player(Entity):
     def toggle_visible(visibility):
       self.visible = visibility
 
-    def toggle_tangible(tangibility):
-      self.intangible = not tangibility
+    def toggle_tangible():
+      if not any(status_effect for status_effect in StatusEffect.group
+          if status_effect.name == "shield"):
+        self.intangible = False
 
     self.tasks.add(
       Task(partial(toggle_visible, False), loops=3, loop_timer=0.5),
       Task(partial(toggle_visible, True), delay=0.25, loops=3, loop_timer=0.5),
-      Task(partial(toggle_tangible, True), delay=1.5)
+      Task(toggle_tangible, delay=1.5)
     )
 
   def jump(self):
