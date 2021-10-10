@@ -63,7 +63,7 @@ class Spawner():
     self.tasks = pygame.sprite.Group()
     self.tasks.add(
       Task(generate_obstacle, loops=True, loop_timer=5),
-      Task(generate_item, loops=True, loop_timer=1)
+      Task(generate_item, loops=True, loop_timer=5)
     )
   
   def spawn_lasers(self):

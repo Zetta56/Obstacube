@@ -1,6 +1,7 @@
 import pygame
 from utils.globals import Globals
 from utils.task import Task
+from utils.sounds import Sounds
 from utils.helpers import draw_polygon
 from entities.entity import Entity
 
@@ -25,6 +26,7 @@ class Ball(Entity):
     self.tasks.update()
     self.rotation += self.rotation_rate
     if self.onGround:
+      Sounds.ball.play()
       self.vel.y = -1 * self.jump_power
 
     # Update position and check for collisions

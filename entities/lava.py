@@ -1,6 +1,7 @@
 import pygame
 from utils.globals import Globals
 from utils.task import Task
+from utils.sounds import Sounds
 from entities.entity import Entity
 
 class Lava(Entity):
@@ -20,8 +21,12 @@ class Lava(Entity):
     def fall():
       self.vel.y = 2
 
-    self.tasks.add(Task(stabilize, delay=2))
-    self.tasks.add(Task(fall, delay=4))
+    self.tasks.add(
+      Task(stabilize, delay=2),
+      Task(fall, delay=4),
+      Task(Sounds.lava.play, loops=6, loop_timer=0.8)
+    )
+    # self.tasks.add(Task(fall, delay=4))
 
   def update(self):
     self.tasks.update()

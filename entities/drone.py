@@ -1,6 +1,7 @@
 import pygame
 from utils.globals import Globals
 from utils.task import Task
+from utils.sounds import Sounds
 from utils.helpers import draw_polygon
 from entities.entity import Entity
 from entities.bullet import Bullet
@@ -36,6 +37,7 @@ class Drone(Entity):
     # location as it updates and not initial location
     self.timer += self.clock.tick()
     if self.timer > self.cooldown:
+      Sounds.shot.play()
       directions = ((1, 1), (1, -1), (-1, 1), (-1, -1))
       for direction in directions:
         Bullet.group.add(Bullet(self.player, 10, self.rect.x, self.rect.y,

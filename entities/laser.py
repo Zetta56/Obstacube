@@ -3,6 +3,7 @@ from functools import partial
 from random import randrange
 
 from utils.globals import Globals
+from utils.sounds import Sounds
 from entities.entity import Entity
 from utils.task import Task
 
@@ -13,7 +14,7 @@ class Laser(Entity):
     self.width = 50
     self.intangible = True
 
-    # Rects
+    # References
     self.player = player
     super().__init__(self.color, x + self.width / 2, 0, 1, 
       Globals.display_rect.height)
@@ -36,6 +37,7 @@ class Laser(Entity):
       self.rect.width = self.length.x + expansion_size
       self.rect.x = self.pos.x - expansion_size / 2
       self.intangible = False
+      Sounds.laser.play()
 
     self.tasks.add(
       Task(partial(expand_horizontal, 1), duration=1), 

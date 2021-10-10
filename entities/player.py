@@ -3,6 +3,7 @@ from functools import partial
 
 from utils.globals import Globals
 from utils.task import Task
+from utils.sounds import Sounds
 from interfaces.status_effect import StatusEffect
 from entities.entity import Entity
 from entities.platform import Platform
@@ -19,11 +20,11 @@ class Player(Entity):
     self.max_jumps = 1
     self.max_lives = 3
 
-    # Rects
+    # References
     self.scoreboard = scoreboard
     super().__init__(self.color, self.start_x, self.start_y, 
       self.size, self.size, platforms=platforms, physics=True)
-    
+
     # State
     self.jumps = self.max_jumps
     self.lives = self.max_lives
@@ -56,6 +57,7 @@ class Player(Entity):
       self.lives -= 1
       self.scoreboard.update_lives(self.lives)
       self.intangible = True
+      Sounds.hit.play()
 
       if self.lives > 0: 
         self.schedule()

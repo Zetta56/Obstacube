@@ -1,7 +1,7 @@
 import pygame
 from random import randrange
 from utils.globals import Globals
-from utils.task import Task
+from interfaces.status_effect import StatusEffect
 
 class Item(pygame.sprite.Sprite):
   group = pygame.sprite.Group()

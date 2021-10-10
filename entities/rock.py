@@ -3,6 +3,7 @@ from functools import partial
 
 from utils.globals import Globals
 from utils.task import Task
+from utils.sounds import Sounds
 from utils.helpers import draw_polygon
 from entities.entity import Entity
 from entities.platform import Platform
@@ -32,6 +33,7 @@ class Rock(Entity):
       self.rect.x = self.pos.x
 
     def drop():
+      Sounds.rock.play()
       self.vel.y = self.speed
 
     self.tasks.add(
