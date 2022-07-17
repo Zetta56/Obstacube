@@ -12,10 +12,9 @@ class Start():
       Globals.display_rect.centery - 60)
 
     # Button
-    def start():
-      Globals.playing = True
-    self.start_button = Button("Play", "#22aa22", start,
-      (Globals.display_rect.centerx, Globals.display_rect.centery + 60))
+    def on_start(): Globals.playing = True
+    self.start_button = Button("Play", "#22aa22", on_start,
+        (Globals.display_rect.centerx, Globals.display_rect.centery + 60))
 
   def blit(self):
     Globals.display.blit(self.title, self.title_rect)

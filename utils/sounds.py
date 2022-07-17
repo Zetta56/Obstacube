@@ -1,8 +1,9 @@
 import pygame
-import os
 
 class Sounds():
   pygame.mixer.init()
+  bgm = pygame.mixer.Sound("sounds/bgm.wav")
+  bgm.set_volume(0.1)
   laser = pygame.mixer.Sound("sounds/laser.wav")
   laser.set_volume(0.05)
   hit = pygame.mixer.Sound("sounds/hit.wav")

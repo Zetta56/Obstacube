@@ -1,10 +1,10 @@
 import pygame
 import sys
-import time
 
 from utils.globals import Globals
 from utils.helpers import save_score
 from utils.spawner import Spawner
+from utils.sounds import Sounds
 from interfaces.scoreboard import Scoreboard
 from interfaces.button import Button
 from interfaces.start import Start
@@ -12,7 +12,6 @@ from interfaces.results import Results
 from interfaces.status_effect import StatusEffect
 from interfaces.pause import Pause
 from entities.bullet import Bullet
-from items.item import Item
 
 class Main():
   def __init__(self):
@@ -91,6 +90,7 @@ class Main():
 
   def run(self):
     """Runs main game"""
+    Sounds.bgm.play(-1)
     while Globals.running:
       self.clock.tick(Globals.fps)
       self.check_events()

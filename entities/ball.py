@@ -1,6 +1,4 @@
 import pygame
-from utils.globals import Globals
-from utils.task import Task
 from utils.sounds import Sounds
 from utils.helpers import draw_polygon
 from entities.entity import Entity
